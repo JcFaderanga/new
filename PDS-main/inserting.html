@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personnel Data Entry</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label, input {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        input {
+            height: 35px;
+            border-radius: 15px;
+            outline: none;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            padding: 5px;
+            width: 100%;
+        }
+        button {
+            height: 50px;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .error-border {
+            border: 2px solid red !important;
+        }
+    </style>
+</head>
+<body>
+    <h2>Personnel Data Entry</h2>
+    <form id="dataForm">
+        <label>Rank: <input type="text" id="rank" required></label>
+        <label>Last Name: <input type="text" id="lastname" required></label>
+        <label>First Name: <input type="text" id="firstname" required></label>
+        <label>Middle Name: <input type="text" id="middlename" required></label>
+        <label>Badge No: <input type="text" id="badge_no" required></label>
+        <label>Designation: <input type="text" id="designation" required></label>
+        <label>Date Designated: <input type="date" id="date_designated" required></label>
+        <label>Unit: <input type="text" id="unit" required></label>
+        <label>Subunit: <input type="text" id="subunit" required></label>
+        <label>Station: <input type="text" id="station" required></label>
+        <label>Sub Station: <input type="text" id="sub_station" required></label>
+        <label>CP No: <input type="text" id="cp_no" required></label>
+        <label>Other CP No: <input type="text" id="other_cp_no" required></label>
+        <label>Date of Birth: <input type="date" id="date_of_birth" required></label>
+        <label>Place of Birth: <input type="text" id="place_of_birth" required></label>
+        <label>Email Address: <input type="email" id="email_address" required></label>
+        <label>Sex: <input type="text" id="sex" required></label>
+        <label>Civil Status: <input type="text" id="civil_status" required></label>
+        <label>Housing Data: <input type="text" id="housing_data" required></label>
+        <label>No. of Dependents: <input type="number" id="no_of_dependents" required></label>
+        <label>Date Entered Service: <input type="date" id="date_entered_service" required></label>
+        <label>Date of Last Promotion: <input type="date" id="date_of_last_promotion" required></label>
+        <label>Primary: <input type="text" id="primary" required></label>
+        <label>Secondary: <input type="text" id="secondary" required></label>
+        <label>Vocational: <input type="text" id="vocational" required></label>
+        <label>College: <input type="text" id="college" required></label>
+        <label>Master's Degree: <input type="text" id="masters_degree" required></label>
+        <label>Mandatory: <input type="text" id="mandatory" required></label>
+        <label>Specialized Course: <input type="text" id="specialized_course" required></label>
+        <label>PRC Ratings: <input type="text" id="prc_ratings" required></label>
+        <label>NAPOLCOM: <input type="text" id="napolcom" required></label>
+        <label>Civil Service: <input type="text" id="civil_service" required></label>
+        <label>Short F/A: <input type="text" id="short_fa" required></label>
+        <label>Long F/A: <input type="text" id="long_fa" required></label>
+        <div id="error-message" class="error"></div>
+        <button type="button" onclick="saveData()">Save</button>
+        <button type="button" onclick="downloadExcel()">Download Excel</button>
+        <button type="button" onclick="clearStorage()">Clear Storage</button>
+    </form>
+    
+    <script>
+        function saveData() {
+            let personnel = JSON.parse(localStorage.getItem("personnelData")) || [];
+            let newData = {};
+            let allFilled = true;
+            document.getElementById("error-message").innerText = "";
+            
+            document.querySelectorAll("input").forEach(input => {
+                if (!input.value) {
+                    allFilled = false;
+                    input.classList.add("error-border");
+                } else {
+                    input.classList.remove("error-border");
+                }
+                newData[input.id] = input.value;
+            });
+            
+            if (!allFilled) {
+                document.getElementById("error-message").innerText = "All fields are required.";
+                return;
+            }
+            
+            personnel.push(newData);
+            localStorage.setItem("personnelData", JSON.stringify(personnel));
+            document.getElementById("dataForm").reset();
+            alert("Data Saved!");
+        }
+        
+        function downloadExcel() {
+            let personnel = JSON.parse(localStorage.getItem("personnelData")) || [];
+            let ws = XLSX.utils.json_to_sheet(personnel);
+            let wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "PersonnelData");
+            XLSX.writeFile(wb, "personnel_data.xlsx");
+        }
+        function clearStorage() {
+            if (confirm("Are you sure you want to clear all stored data?")) {
+                localStorage.removeItem("personnelData");
+                alert("Storage cleared!");
+            }
+        }
+    </script>
+</body>
+</html>

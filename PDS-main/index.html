@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDS</title>
+    <link rel="stylesheet" href="style/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <!-- <h2 class="text-blue-500 font-bold">Excel Reader - Store in LocalStorage</h2>
+    
+    <hr>
+    <h3>Stored Data:</h3> -->
+    <nav id="app" class="header">
+        <h3>Personnel Data</h3> 
+        <div>
+            <button onclick="clearStorage()">Clear Storage</button>
+            <input type="file" id="fileInput" accept=".xlsx">
+        </div>
+    </nav>
+    <main class="container">
+        <section>
+            <div class="search-container"> 
+                <div class="search-filter">
+                    <span>Search</span>
+                    <input class="search-input"  type="text" id="searchInput" placeholder="Search..." />
+                </div>
+            </div>
+            <div class="table-container">
+                <table id="dataTable" class="table"></table>
+            </div>
+        </section>
+    </main>
+    
+    <script src="script/index.js"></script>
+    <!-- <script type="text/babel" src="script/index2.js"></script> -->
+</body>
+</html>
